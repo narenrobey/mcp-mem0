@@ -86,12 +86,13 @@ def get_mem0_client():
         if embedding_base_url:
             config["embedder"]["config"]["ollama_base_url"] = embedding_base_url
     
-    # Configure Supabase vector store
+    # Configure Qdrant vector store
     config["vector_store"] = {
-        "provider": "supabase",
+        "provider": "qdrant",
         "config": {
-            "connection_string": os.environ.get('DATABASE_URL', ''),
-            "collection_name": "mem0_memories",
+            "host": os.environ.get('QDRANT_HOST', ''),
+            "port": int(os.environ.get('QDRANT_PORT', 6333)),
+            "collection_name": os.environ.get('QDRANT_COLLECTION', 'mem0_collection'),
             "embedding_model_dims": 1536 if llm_provider == "openai" else 768
         }
     }
